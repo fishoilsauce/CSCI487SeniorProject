@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://gtnsqjbuqorl"]
+
+[ext_resource type="Script" uid="uid://jcn7u318hf2p" path="res://scripts/EnemyRunner.gd" id="1_lyb4u"]
+[ext_resource type="PackedScene" uid="uid://com1tqc81vgh6" path="res://scenes/enemies/TankEnemy.tscn" id="2_lyb4u"]
+
+[node name="TankEnemyRunner" type="PathFollow2D" unique_id=1207767817]
+script = ExtResource("1_lyb4u")
+
+[node name="Enemy" parent="." unique_id=305367900 instance=ExtResource("2_lyb4u")]

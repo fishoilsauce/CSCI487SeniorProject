@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://com1tqc81vgh6"]
+
+[ext_resource type="Script" uid="uid://wcamufbm3227" path="res://scripts/Enemy.gd" id="1_1jm2f"]
+[ext_resource type="Texture2D" uid="uid://4s34p7rejbwg" path="res://Icons/shield.svg" id="2_1jm2f"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hpe7p"]
+radius = 16.0
+
+[node name="Enemy" type="Node2D" unique_id=305367900]
+script = ExtResource("1_1jm2f")
+max_hp = 10
+reward = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1147028441]
+z_index = 10
+position = Vector2(0.53125066, 0.65625155)
+scale = Vector2(0.045837402, 0.05145264)
+texture = ExtResource("2_1jm2f")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1804883244]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=2010935320]
+shape = SubResource("CircleShape2D_hpe7p")

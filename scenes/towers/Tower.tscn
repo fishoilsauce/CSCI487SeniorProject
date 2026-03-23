@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://ddbj6g4mb7iqt"]
+
+[ext_resource type="Script" uid="uid://dh23bhffx3wcd" path="res://scripts/Tower.gd" id="1_8udu1"]
+[ext_resource type="Texture2D" uid="uid://bhv61u8c4tt6x" path="res://Icons/tempTower.svg" id="1_cqx8d"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cqx8d"]
+radius = 80.0
+
+[node name="Tower" type="Node2D" unique_id=805172022]
+script = ExtResource("1_8udu1")
+damage = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1593916819]
+z_index = 20
+texture = ExtResource("1_cqx8d")
+
+[node name="Range" type="Area2D" parent="." unique_id=550657783]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range" unique_id=346457966]
+shape = SubResource("CircleShape2D_cqx8d")
+
+[node name="FireTimer" type="Timer" parent="." unique_id=1698936728]
+wait_time = 0.5
+autostart = true
