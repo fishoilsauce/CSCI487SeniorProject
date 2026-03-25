@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cw2p88g0wa1h8"]
 
 [ext_resource type="Script" uid="uid://cndoem023i11l" path="res://scripts/Main.gd" id="1_u1xfj"]
-[ext_resource type="Texture2D" uid="uid://dabm15mp7hvfm" path="res://Icons/icon.svg" id="2_nha0i"]
+[ext_resource type="Texture2D" uid="uid://dabm15mp7hvfm" path="res://Assets/icon.svg" id="2_nha0i"]
 
 [sub_resource type="Curve2D" id="Curve2D_vyk5b"]
 _data = {
@@ -165,3 +165,10 @@ autowrap_mode = 2
 [node name="SelectedTowerLabel" type="Label" parent="UI/TowerPanel/VBoxContainer" unique_id=1762246482]
 layout_mode = 2
 text = " Selected: None"
+
+[node name="ResetButton" type="Button" parent="UI" unique_id=148850857]
+offset_left = 15.0
+offset_top = 150.0
+offset_right = 116.0
+offset_bottom = 181.0
+text = "Reset Game"

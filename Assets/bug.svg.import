@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://61lusmbdu760"
-path="res://.godot/imported/tempEnemy.svg-d7c75af14a55ed2745d568a01e763565.ctex"
+uid="uid://flvma84wwjo7"
+path="res://.godot/imported/bug.svg-2efd5aed0441af1b750cbe63ae530b99.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Icons/tempEnemy.svg"
-dest_files=["res://.godot/imported/tempEnemy.svg-d7c75af14a55ed2745d568a01e763565.ctex"]
+source_file="res://Assets/bug.svg"
+dest_files=["res://.godot/imported/bug.svg-2efd5aed0441af1b750cbe63ae530b99.ctex"]
 
 [params]
 

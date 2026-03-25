@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4s34p7rejbwg"
-path="res://.godot/imported/shield.svg-26d952dc1142fa5379a8dbc0529ea31a.ctex"
+uid="uid://bhv61u8c4tt6x"
+path="res://.godot/imported/tempTower.svg-d8f17bab915c78d553342a2ca8ba185c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Icons/shield.svg"
-dest_files=["res://.godot/imported/shield.svg-26d952dc1142fa5379a8dbc0529ea31a.ctex"]
+source_file="res://Assets/tempTower.svg"
+dest_files=["res://.godot/imported/tempTower.svg-d8f17bab915c78d553342a2ca8ba185c.ctex"]
 
 [params]
 

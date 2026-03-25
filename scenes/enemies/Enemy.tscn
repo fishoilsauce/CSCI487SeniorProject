@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://dehoss1pqg3r2"]
 
 [ext_resource type="Script" uid="uid://wcamufbm3227" path="res://scripts/Enemy.gd" id="1_k7o7a"]
-[ext_resource type="Texture2D" uid="uid://flvma84wwjo7" path="res://Icons/bug.svg" id="2_k7o7a"]
+[ext_resource type="Texture2D" uid="uid://flvma84wwjo7" path="res://Assets/bug.svg" id="2_k7o7a"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hpe7p"]
 radius = 16.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k7o7a"]
+bg_color = Color(0.18039216, 0.8, 0.44313726, 1)
 
 [node name="Enemy" type="Node2D" unique_id=305367900]
 script = ExtResource("1_k7o7a")
@@ -22,3 +25,13 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=2010935320]
 shape = SubResource("CircleShape2D_hpe7p")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=636394019]
+offset_left = -12.0
+offset_top = 12.0
+offset_right = 12.0
+offset_bottom = 16.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_k7o7a")
+max_value = 5.0
+value = 5.0
+show_percentage = false

@@ -13,7 +13,7 @@ config_version=5
 config/name="487Project"
 run/main_scene="uid://cw2p88g0wa1h8"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://Icons/icon.svg"
+config/icon="res://Assets/icon.svg"
 
 [physics]
 

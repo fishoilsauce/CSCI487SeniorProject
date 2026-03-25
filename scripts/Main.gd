@@ -27,6 +27,8 @@ const MAX_WAVES := 3
 @onready var heavy_tower_button: Button = $UI/TowerPanel/VBoxContainer/HeavyTowerButton
 @onready var selected_tower_label: Label = $UI/TowerPanel/VBoxContainer/SelectedTowerLabel
 
+@onready var reset_button: Button = $UI/ResetButton
+
 # ----------------------------
 # Packed Scenes
 # ----------------------------
@@ -62,6 +64,7 @@ enum TowerType { NONE, BASIC, HEAVY }
 func _ready() -> void:
 	basic_tower_button.pressed.connect(_on_basic_tower_button_pressed)
 	heavy_tower_button.pressed.connect(_on_heavy_tower_button_pressed)
+	reset_button.pressed.connect(_on_reset_button_pressed)
 	update_ui()
 
 # ----------------------------
@@ -133,12 +136,17 @@ func start_wave() -> void:
 	update_ui()
 
 	for i in range(enemies_per_wave):
-		if game_over:
+		if game_over or game_won:
 			return
-		if wave > 1 and i % 3 == 2:
-			spawn_enemy(tank_enemy_runner_scene)
-		else: 
+		if wave == 1:
 			spawn_enemy(enemy_runner_scene)
+		elif wave == 2:
+			if i % 3 == 2:
+				spawn_enemy(tank_enemy_runner_scene)
+			else: 
+				spawn_enemy(enemy_runner_scene)
+		elif wave == 3:
+			spawn_enemy(tank_enemy_runner_scene)  
 		await get_tree().create_timer(spawn_interval).timeout
 
 	wave_spawning_done = true
@@ -169,11 +177,11 @@ func _on_enemy_died(reward_amount: int) -> void:
 	update_ui()
 	_check_wave_end()
 
-func _on_enemy_leaked() -> void:
+func _on_enemy_leaked(leak_damage: int) -> void:
 	if game_over:
 		return
 
-	health -= 1
+	health -= leak_damage
 	if health < 0:
 		health = 0
 
@@ -213,6 +221,9 @@ func update_ui() -> void:
 		TowerType.HEAVY:
 			selected_tower_label.text = "Selected: Heavy Tower"
 
+func _on_reset_button_pressed() -> void:
+	get_tree().reload_current_scene() 
+	
 # ----------------------------
 # Wave End Logic
 # ----------------------------
