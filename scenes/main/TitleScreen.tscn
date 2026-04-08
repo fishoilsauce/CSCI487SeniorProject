@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dukg4mndjov3"]
+
+[ext_resource type="Script" uid="uid://djeeoni756wnt" path="res://scripts/TitleScreen.gd" id="1_ev0fr"]
+
+[node name="TitleScreen" type="Control" unique_id=2090709921]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ev0fr")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1390323906]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.38850373, 0.45613045, 0.73685765, 1)
+
+[node name="TitleLabel" type="Label" parent="." unique_id=276258027]
+layout_mode = 0
+offset_left = 476.0
+offset_top = 19.0
+offset_right = 629.0
+offset_bottom = 42.0
+text = "Path to Graduation!"
+
+[node name="StartButton" type="Button" parent="." unique_id=1625681089]
+layout_mode = 0
+offset_left = 411.0
+offset_top = 82.0
+offset_right = 517.0
+offset_bottom = 113.0
+text = "START GAME"
+
+[node name="QuitButton" type="Button" parent="." unique_id=1534002193]
+layout_mode = 0
+offset_left = 602.0
+offset_top = 76.0
+offset_right = 649.0
+offset_bottom = 107.0
+text = "QUIT"

@@ -1,5 +1,7 @@
 extends Node2D
 
+var cost: int = 0
+
 @export var damage: int = 1
 
 var targets: Array[Node] = []

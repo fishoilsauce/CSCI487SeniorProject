@@ -17,6 +17,8 @@ const MAX_WAVES := 3
 @onready var enemy_path: Path2D = $EnemyPath
 @onready var grid: TileMap = $Grid
 
+@onready var preview: Sprite2D = $PlacementPreview
+
 @onready var money_label: Label = $UI/MoneyLabel
 @onready var health_label: Label = $UI/HealthLabel
 @onready var wave_label: Label = $UI/WaveLabel
@@ -28,6 +30,11 @@ const MAX_WAVES := 3
 @onready var selected_tower_label: Label = $UI/TowerPanel/VBoxContainer/SelectedTowerLabel
 
 @onready var reset_button: Button = $UI/ResetButton
+
+@onready var tower_action_panel: Panel = $UI/TowerActionPanel
+@onready var tower_info_label: Label = $UI/TowerActionPanel/TowerInfoLabel
+@onready var sell_tower_button: Button = $UI/TowerActionPanel/SellTowerButton
+@onready var upgrade_tower_button: Button = $UI/TowerActionPanel/UpgradeTowerButton
 
 # ----------------------------
 # Packed Scenes
@@ -58,6 +65,8 @@ var alive_enemies: int = 0
 var selected_tower: TowerType = TowerType.NONE
 enum TowerType { NONE, BASIC, HEAVY }
 
+var selected_placed_tower: Node2D = null
+var selected_placed_tower_cell: Vector2i = Vector2i.ZERO
 # ----------------------------
 # Lifecycle
 # ----------------------------
@@ -65,6 +74,9 @@ func _ready() -> void:
 	basic_tower_button.pressed.connect(_on_basic_tower_button_pressed)
 	heavy_tower_button.pressed.connect(_on_heavy_tower_button_pressed)
 	reset_button.pressed.connect(_on_reset_button_pressed)
+	sell_tower_button.pressed.connect(_on_sell_tower_button_pressed)
+	upgrade_tower_button.disabled = true
+	tower_action_panel.visible = false
 	update_ui()
 
 # ----------------------------
@@ -76,6 +88,18 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# Mouse click = place tower
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var mouse_pos: Vector2 = get_global_mouse_position()
+		var cell: Vector2i = grid.local_to_map(grid.to_local(mouse_pos))
+
+		# If clicking a placed tower, select it
+		if occupied.has(cell):
+			select_placed_tower(occupied[cell], cell)
+			return
+
+		# Otherwise clear placed tower selection
+		clear_placed_tower_selection()
+
+		# Place new tower if build option is selected
 		match selected_tower:
 			TowerType.BASIC:
 				place_tower_at_mouse(tower_scene, TOWER_COST)
@@ -121,8 +145,34 @@ func place_tower_at_mouse(tower_scene_to_place: PackedScene, tower_cost: int) ->
 	var tower := tower_scene_to_place.instantiate() as Node2D
 	add_child(tower)
 	tower.global_position = grid.to_global(grid.map_to_local(cell))
+	tower.cost = tower_cost
 
-	occupied[cell] = true
+	occupied[cell] = tower
+
+func select_placed_tower(tower: Node2D, cell: Vector2i) -> void:
+	selected_placed_tower = tower
+	selected_placed_tower_cell = cell
+	tower_action_panel.visible = true
+	tower_info_label.text = "Selected Tower\nSell Value: $" + str(int(tower.cost * 0.5))
+
+func clear_placed_tower_selection() -> void:
+	selected_placed_tower = null
+	selected_placed_tower_cell = Vector2i.ZERO
+	tower_action_panel.visible = false
+
+func _on_sell_tower_button_pressed() -> void:
+	if selected_placed_tower == null:
+		return
+
+	var refund := int(selected_placed_tower.cost * 0.5)
+	money += refund
+
+	occupied.erase(selected_placed_tower_cell)
+	selected_placed_tower.queue_free()
+
+	clear_placed_tower_selection()
+	update_ui()
+
 
 # ----------------------------
 # Waves / Spawning
@@ -223,7 +273,33 @@ func update_ui() -> void:
 
 func _on_reset_button_pressed() -> void:
 	get_tree().reload_current_scene() 
+
+func _process(delta: float) -> void:
+	update_preview()
+
+func update_preview() -> void:
+	if selected_tower ==TowerType.NONE:
+		preview.visible = false
+		return
+	preview.visible = true
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	var cell: Vector2i = grid.local_to_map(grid.to_local(mouse_pos))
+	var world_pos: Vector2 = grid.to_global(grid.map_to_local(cell))
 	
+	preview.global_position = world_pos
+	
+	var valid := true
+	
+	if grid.get_cell_source_id(0, cell) == -1:
+		valid = false
+	if grid.get_cell_atlas_coords(0, cell) != BUILDABLE_ATLAS:
+		valid = false
+	if occupied.has(cell):
+		valid = false
+	if valid:
+		preview.modulate = Color(0, 1, 0, 0.5)
+	else:
+		preview.modulate = Color(1, 0, 0, 0.5)
 # ----------------------------
 # Wave End Logic
 # ----------------------------
