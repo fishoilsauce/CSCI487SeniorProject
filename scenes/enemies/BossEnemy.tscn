@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://lupeb6kfgnmo"]
+
+[ext_resource type="Script" uid="uid://wcamufbm3227" path="res://scripts/Enemy.gd" id="1_eushv"]
+[ext_resource type="Texture2D" uid="uid://4s34p7rejbwg" path="res://Assets/shield.svg" id="2_6g7ay"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hpe7p"]
+radius = 16.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jm2f"]
+bg_color = Color(0.18039216, 0.8, 0.44313726, 1)
+
+[node name="Enemy" type="Node2D" unique_id=305367900]
+script = ExtResource("1_eushv")
+leak_damage = 8
+max_hp = 50
+reward = 20
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1147028441]
+z_index = 10
+position = Vector2(0.53125066, 0.65625155)
+scale = Vector2(0.045837402, 0.05145264)
+texture = ExtResource("2_6g7ay")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1804883244]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=2010935320]
+shape = SubResource("CircleShape2D_hpe7p")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1443918779]
+offset_left = -12.0
+offset_top = 15.0
+offset_right = 12.0
+offset_bottom = 19.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_1jm2f")
+max_value = 5.0
+value = 5.0
+show_percentage = false

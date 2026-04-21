@@ -179,7 +179,7 @@ text = "Reset Game"
 [node name="TowerActionPanel" type="Panel" parent="UI" unique_id=2005777745]
 offset_left = 763.0
 offset_right = 906.0
-offset_bottom = 87.0
+offset_bottom = 129.0
 
 [node name="TowerInfoLabel" type="Label" parent="UI/TowerActionPanel" unique_id=804237979]
 layout_mode = 0
@@ -191,18 +191,18 @@ text = "Selected Tower"
 
 [node name="SellTowerButton" type="Button" parent="UI/TowerActionPanel" unique_id=2135398051]
 layout_mode = 0
-offset_left = 96.0
-offset_top = 50.0
-offset_right = 131.0
-offset_bottom = 81.0
+offset_left = 98.0
+offset_top = 82.0
+offset_right = 133.0
+offset_bottom = 113.0
 text = "Sell"
 
 [node name="UpgradeTowerButton" type="Button" parent="UI/TowerActionPanel" unique_id=1332267344]
 layout_mode = 0
-offset_left = 9.0
-offset_top = 50.0
-offset_right = 84.0
-offset_bottom = 81.0
+offset_left = 7.0
+offset_top = 82.0
+offset_right = 82.0
+offset_bottom = 113.0
 text = "Upgrade"
 
 [node name="PlacementPreview" type="Sprite2D" parent="." unique_id=920587897]

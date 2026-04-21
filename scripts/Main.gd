@@ -6,7 +6,7 @@ extends Node2D
 const BUILDABLE_ATLAS := Vector2i(6, 1)
 const TOWER_COST := 5
 const HEAVY_TOWER_COST := 8
-const MAX_WAVES := 3
+const MAX_WAVES := 4
 
 @export var enemies_per_wave: int = 5
 @export var spawn_interval: float = 0.6
@@ -43,6 +43,7 @@ var enemy_runner_scene: PackedScene = preload("res://scenes/enemies/EnemyRunner.
 var tank_enemy_runner_scene: PackedScene = preload("res://scenes/enemies/TankEnemyRunner.tscn")
 var tower_scene: PackedScene = preload("res://scenes/towers/Tower.tscn")
 var heavy_tower_scene: PackedScene = preload("res://scenes/towers/HeavyTower.tscn")
+var boss_enemy_runner_scene: PackedScene = preload("res://scenes/enemies/BossEnemyRunner.tscn")
 
 # ----------------------------
 # Game State
@@ -75,6 +76,7 @@ func _ready() -> void:
 	heavy_tower_button.pressed.connect(_on_heavy_tower_button_pressed)
 	reset_button.pressed.connect(_on_reset_button_pressed)
 	sell_tower_button.pressed.connect(_on_sell_tower_button_pressed)
+	upgrade_tower_button.pressed.connect(_on_upgrade_tower_button_pressed)
 	upgrade_tower_button.disabled = true
 	tower_action_panel.visible = false
 	update_ui()
@@ -153,12 +155,24 @@ func select_placed_tower(tower: Node2D, cell: Vector2i) -> void:
 	selected_placed_tower = tower
 	selected_placed_tower_cell = cell
 	tower_action_panel.visible = true
-	tower_info_label.text = "Selected Tower\nSell Value: $" + str(int(tower.cost * 0.5))
+
+	var sell_value := int(tower.cost * 0.5)
+	var upgrade_text := ""
+
+	if tower.has_method("can_upgrade") and tower.can_upgrade():
+		upgrade_text = "\nUpgrade Cost: $" + str(tower.upgrade_cost)
+		upgrade_tower_button.disabled = money < tower.upgrade_cost
+	else:
+		upgrade_text = "\nUpgraded: Yes"
+		upgrade_tower_button.disabled = true
+
+	tower_info_label.text = "Selected Tower\nSell Value: $" + str(sell_value) + upgrade_text
 
 func clear_placed_tower_selection() -> void:
 	selected_placed_tower = null
 	selected_placed_tower_cell = Vector2i.ZERO
 	tower_action_panel.visible = false
+	upgrade_tower_button.disabled = true
 
 func _on_sell_tower_button_pressed() -> void:
 	if selected_placed_tower == null:
@@ -173,6 +187,25 @@ func _on_sell_tower_button_pressed() -> void:
 	clear_placed_tower_selection()
 	update_ui()
 
+func _on_upgrade_tower_button_pressed() -> void:
+	if selected_placed_tower == null:
+		return
+
+	if not selected_placed_tower.has_method("can_upgrade"):
+		return
+
+	if not selected_placed_tower.can_upgrade():
+		return
+
+	var cost_to_upgrade: int = int(selected_placed_tower.upgrade_cost)
+	if money < cost_to_upgrade:
+		return
+
+	money -= cost_to_upgrade
+	selected_placed_tower.upgrade()
+
+	select_placed_tower(selected_placed_tower, selected_placed_tower_cell)
+	update_ui()
 
 # ----------------------------
 # Waves / Spawning
@@ -185,19 +218,38 @@ func start_wave() -> void:
 	prompt_label.text = "Wave in progress..."
 	update_ui()
 
-	for i in range(enemies_per_wave):
-		if game_over or game_won:
-			return
-		if wave == 1:
+	if wave == 1:
+		for i in range(enemies_per_wave):
+			if game_over or game_won:
+				return
 			spawn_enemy(enemy_runner_scene)
-		elif wave == 2:
+			await get_tree().create_timer(spawn_interval).timeout
+
+	elif wave == 2:
+		for i in range(enemies_per_wave):
+			if game_over or game_won:
+				return
 			if i % 3 == 2:
 				spawn_enemy(tank_enemy_runner_scene)
-			else: 
+			else:
 				spawn_enemy(enemy_runner_scene)
-		elif wave == 3:
-			spawn_enemy(tank_enemy_runner_scene)  
-		await get_tree().create_timer(spawn_interval).timeout
+			await get_tree().create_timer(spawn_interval).timeout
+
+	elif wave == 3:
+		for i in range(enemies_per_wave):
+			if game_over or game_won:
+				return
+			spawn_enemy(tank_enemy_runner_scene)
+			await get_tree().create_timer(spawn_interval).timeout
+
+	elif wave == 4:
+		# FINAL BOSS WAVE
+		prompt_label.text = "FINAL EXAM APPROACHING..."
+		update_ui()
+
+		await get_tree().create_timer(1.0).timeout  # dramatic pause
+
+		spawn_enemy(boss_enemy_runner_scene)
 
 	wave_spawning_done = true
 	_check_wave_end()
@@ -270,6 +322,12 @@ func update_ui() -> void:
 			selected_tower_label.text = "Selected: Basic Tower"
 		TowerType.HEAVY:
 			selected_tower_label.text = "Selected: Heavy Tower"
+	
+	if selected_placed_tower != null:
+		if selected_placed_tower.has_method("can_upgrade") and selected_placed_tower.can_upgrade():
+			upgrade_tower_button.disabled = money < selected_placed_tower.upgrade_cost
+		else:
+			upgrade_tower_button.disabled = true
 
 func _on_reset_button_pressed() -> void:
 	get_tree().reload_current_scene() 

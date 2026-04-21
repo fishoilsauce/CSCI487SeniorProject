@@ -3,7 +3,11 @@ extends Node2D
 var cost: int = 0
 
 @export var damage: int = 1
+@export var upgrade_cost: int = 5
+@export var upgraded_damage_bonus: int = 2
+@export var upgraded_fire_rate_multiplier: float = 0.85
 
+var is_upgraded: bool = false
 var targets: Array[Node] = []
 
 @onready var range_area: Area2D = $Range
@@ -40,11 +44,19 @@ func _on_fire_timer_timeout() -> void:
 			best = t
 			best_dist = d
 
-	# Spawn projectile
 	var p := projectile_scene.instantiate() as Area2D
 	get_tree().current_scene.add_child(p)
 	p.global_position = global_position
-
-	# Set target + damage (Projectile.gd variables)
 	p.target = best
 	p.damage = damage
+
+func can_upgrade() -> bool:
+	return not is_upgraded
+
+func upgrade() -> void:
+	if is_upgraded:
+		return
+
+	damage += upgraded_damage_bonus
+	fire_timer.wait_time *= upgraded_fire_rate_multiplier
+	is_upgraded = true

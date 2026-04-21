@@ -9,6 +9,8 @@ radius = 80.0
 [node name="HeavyTower" type="Node2D" unique_id=805172022]
 script = ExtResource("1_2x3y6")
 damage = 5
+upgrade_cost = 8
+upgraded_damage_bonus = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1593916819]
 z_index = 20
