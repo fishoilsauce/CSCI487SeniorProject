@@ -176,34 +176,57 @@ offset_right = 116.0
 offset_bottom = 181.0
 text = "Reset Game"
 
-[node name="TowerActionPanel" type="Panel" parent="UI" unique_id=2005777745]
-offset_left = 763.0
-offset_right = 906.0
-offset_bottom = 129.0
+[node name="TowerPopup" type="Panel" parent="UI" unique_id=728948440]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -143.0
+offset_top = -114.0
+offset_right = 177.0
+offset_bottom = 146.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="TowerInfoLabel" type="Label" parent="UI/TowerActionPanel" unique_id=804237979]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 4.0
-offset_right = 128.0
-offset_bottom = 27.0
-text = "Selected Tower"
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/TowerPopup" unique_id=1975425744]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="SellTowerButton" type="Button" parent="UI/TowerActionPanel" unique_id=2135398051]
-layout_mode = 0
-offset_left = 98.0
-offset_top = 82.0
-offset_right = 133.0
-offset_bottom = 113.0
+[node name="TowerTitleLabel" type="Label" parent="UI/TowerPopup/VBoxContainer" unique_id=316949302]
+layout_mode = 2
+
+[node name="TowerStatsLabel" type="Label" parent="UI/TowerPopup/VBoxContainer" unique_id=580802967]
+layout_mode = 2
+
+[node name="TowerPathLabel" type="Label" parent="UI/TowerPopup/VBoxContainer" unique_id=1521786680]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/TowerPopup/VBoxContainer" unique_id=1713803085]
+layout_mode = 2
+
+[node name="DamageUpgradeButton" type="Button" parent="UI/TowerPopup/VBoxContainer/HBoxContainer" unique_id=195260621]
+layout_mode = 2
+text = "Damage Path"
+
+[node name="SpeedUpgradeButton" type="Button" parent="UI/TowerPopup/VBoxContainer/HBoxContainer" unique_id=992613487]
+layout_mode = 2
+text = "Speed Path"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI/TowerPopup/VBoxContainer" unique_id=776197490]
+layout_mode = 2
+
+[node name="SellTowerButton" type="Button" parent="UI/TowerPopup/VBoxContainer/HBoxContainer2" unique_id=1264643663]
+layout_mode = 2
 text = "Sell"
 
-[node name="UpgradeTowerButton" type="Button" parent="UI/TowerActionPanel" unique_id=1332267344]
-layout_mode = 0
-offset_left = 7.0
-offset_top = 82.0
-offset_right = 82.0
-offset_bottom = 113.0
-text = "Upgrade"
+[node name="ClosePopupButton" type="Button" parent="UI/TowerPopup/VBoxContainer/HBoxContainer2" unique_id=1493197247]
+layout_mode = 2
+text = "Close"
 
 [node name="PlacementPreview" type="Sprite2D" parent="." unique_id=920587897]
 modulate = Color(0.003921569, 0.003921569, 0.003921569, 0)

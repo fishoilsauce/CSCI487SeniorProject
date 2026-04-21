@@ -16,7 +16,6 @@ const MAX_WAVES := 4
 # ----------------------------
 @onready var enemy_path: Path2D = $EnemyPath
 @onready var grid: TileMap = $Grid
-
 @onready var preview: Sprite2D = $PlacementPreview
 
 @onready var money_label: Label = $UI/MoneyLabel
@@ -31,43 +30,46 @@ const MAX_WAVES := 4
 
 @onready var reset_button: Button = $UI/ResetButton
 
-@onready var tower_action_panel: Panel = $UI/TowerActionPanel
-@onready var tower_info_label: Label = $UI/TowerActionPanel/TowerInfoLabel
-@onready var sell_tower_button: Button = $UI/TowerActionPanel/SellTowerButton
-@onready var upgrade_tower_button: Button = $UI/TowerActionPanel/UpgradeTowerButton
+# Popup UI
+@onready var tower_popup: Panel = $UI/TowerPopup
+@onready var tower_title_label: Label = $UI/TowerPopup/VBoxContainer/TowerTitleLabel
+@onready var tower_stats_label: Label = $UI/TowerPopup/VBoxContainer/TowerStatsLabel
+@onready var tower_path_label: Label = $UI/TowerPopup/VBoxContainer/TowerPathLabel
+@onready var damage_upgrade_button: Button = $UI/TowerPopup/VBoxContainer/HBoxContainer/DamageUpgradeButton
+@onready var speed_upgrade_button: Button = $UI/TowerPopup/VBoxContainer/HBoxContainer/SpeedUpgradeButton
+@onready var sell_tower_button: Button = $UI/TowerPopup/VBoxContainer/HBoxContainer2/SellTowerButton
+@onready var close_popup_button: Button = $UI/TowerPopup/VBoxContainer/HBoxContainer2/ClosePopupButton
 
 # ----------------------------
 # Packed Scenes
 # ----------------------------
 var enemy_runner_scene: PackedScene = preload("res://scenes/enemies/EnemyRunner.tscn")
 var tank_enemy_runner_scene: PackedScene = preload("res://scenes/enemies/TankEnemyRunner.tscn")
+var boss_enemy_runner_scene: PackedScene = preload("res://scenes/enemies/BossEnemyRunner.tscn")
 var tower_scene: PackedScene = preload("res://scenes/towers/Tower.tscn")
 var heavy_tower_scene: PackedScene = preload("res://scenes/towers/HeavyTower.tscn")
-var boss_enemy_runner_scene: PackedScene = preload("res://scenes/enemies/BossEnemyRunner.tscn")
 
 # ----------------------------
 # Game State
 # ----------------------------
-var occupied := {}               # placed tower cells
+var occupied := {}
 var money: int = 50
 var health: int = 20
 var wave: int = 0
 
-# Game over state
 var game_over: bool = false
-# Game won state
 var game_won: bool = false
 
-# Wave state
 var spawning_wave: bool = false
 var wave_spawning_done: bool = false
 var alive_enemies: int = 0
 
-var selected_tower: TowerType = TowerType.NONE
 enum TowerType { NONE, BASIC, HEAVY }
+var selected_tower: TowerType = TowerType.NONE
 
 var selected_placed_tower: Node2D = null
 var selected_placed_tower_cell: Vector2i = Vector2i.ZERO
+
 # ----------------------------
 # Lifecycle
 # ----------------------------
@@ -75,11 +77,17 @@ func _ready() -> void:
 	basic_tower_button.pressed.connect(_on_basic_tower_button_pressed)
 	heavy_tower_button.pressed.connect(_on_heavy_tower_button_pressed)
 	reset_button.pressed.connect(_on_reset_button_pressed)
+
 	sell_tower_button.pressed.connect(_on_sell_tower_button_pressed)
-	upgrade_tower_button.pressed.connect(_on_upgrade_tower_button_pressed)
-	upgrade_tower_button.disabled = true
-	tower_action_panel.visible = false
+	damage_upgrade_button.pressed.connect(_on_damage_upgrade_button_pressed)
+	speed_upgrade_button.pressed.connect(_on_speed_upgrade_button_pressed)
+	close_popup_button.pressed.connect(_on_close_popup_button_pressed)
+
+	tower_popup.visible = false
+	preview.visible = false
+
 	update_ui()
+	prompt_label.text = "Press SPACE to start wave!"
 
 # ----------------------------
 # Input
@@ -88,20 +96,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	if game_over or game_won:
 		return
 
-	# Mouse click = place tower
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var mouse_pos: Vector2 = get_global_mouse_position()
 		var cell: Vector2i = grid.local_to_map(grid.to_local(mouse_pos))
 
-		# If clicking a placed tower, select it
 		if occupied.has(cell):
 			select_placed_tower(occupied[cell], cell)
 			return
 
-		# Otherwise clear placed tower selection
 		clear_placed_tower_selection()
 
-		# Place new tower if build option is selected
 		match selected_tower:
 			TowerType.BASIC:
 				place_tower_at_mouse(tower_scene, TOWER_COST)
@@ -110,7 +114,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			TowerType.NONE:
 				return
 
-	# Space = start wave (only if no wave active)
 	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE and not event.echo:
 		if spawning_wave:
 			return
@@ -123,24 +126,19 @@ func place_tower_at_mouse(tower_scene_to_place: PackedScene, tower_cost: int) ->
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	var cell: Vector2i = grid.local_to_map(grid.to_local(mouse_pos))
 
-	# Must click on painted tiles
 	if grid.get_cell_source_id(0, cell) == -1:
 		return
 
-	# Must be buildable tile
 	var atlas: Vector2i = grid.get_cell_atlas_coords(0, cell)
 	if atlas != BUILDABLE_ATLAS:
 		return
 
-	# Must be empty
 	if occupied.has(cell):
 		return
 
-	# Must afford tower
 	if money < tower_cost:
 		return
 
-	# Pay + place
 	money -= tower_cost
 	update_ui()
 
@@ -152,33 +150,57 @@ func place_tower_at_mouse(tower_scene_to_place: PackedScene, tower_cost: int) ->
 	occupied[cell] = tower
 
 func select_placed_tower(tower: Node2D, cell: Vector2i) -> void:
+	if selected_placed_tower != null and selected_placed_tower.has_method("set_selected"):
+		selected_placed_tower.set_selected(false)
+
 	selected_placed_tower = tower
 	selected_placed_tower_cell = cell
-	tower_action_panel.visible = true
 
-	var sell_value := int(tower.cost * 0.5)
-	var upgrade_text := ""
+	if selected_placed_tower.has_method("set_selected"):
+		selected_placed_tower.set_selected(true)
 
-	if tower.has_method("can_upgrade") and tower.can_upgrade():
-		upgrade_text = "\nUpgrade Cost: $" + str(tower.upgrade_cost)
-		upgrade_tower_button.disabled = money < tower.upgrade_cost
-	else:
-		upgrade_text = "\nUpgraded: Yes"
-		upgrade_tower_button.disabled = true
-
-	tower_info_label.text = "Selected Tower\nSell Value: $" + str(sell_value) + upgrade_text
+	tower_popup.visible = true
+	update_tower_popup()
 
 func clear_placed_tower_selection() -> void:
+	if selected_placed_tower != null and selected_placed_tower.has_method("set_selected"):
+		selected_placed_tower.set_selected(false)
+
 	selected_placed_tower = null
 	selected_placed_tower_cell = Vector2i.ZERO
-	tower_action_panel.visible = false
-	upgrade_tower_button.disabled = true
+	tower_popup.visible = false
+
+func update_tower_popup() -> void:
+	if selected_placed_tower == null:
+		tower_popup.visible = false
+		return
+
+	tower_title_label.text = str(selected_placed_tower.tower_name)
+	tower_stats_label.text = selected_placed_tower.get_stats_text()
+	tower_path_label.text = selected_placed_tower.get_path_text()
+
+	var damage_cost: int = int(selected_placed_tower.get_damage_upgrade_cost())
+	var speed_cost: int = int(selected_placed_tower.get_speed_upgrade_cost())
+
+	if damage_cost >= 0:
+		damage_upgrade_button.text = "Damage ($%d)" % damage_cost
+		damage_upgrade_button.disabled = money < damage_cost
+	else:
+		damage_upgrade_button.text = "Damage (Locked)"
+		damage_upgrade_button.disabled = true
+
+	if speed_cost >= 0:
+		speed_upgrade_button.text = "Speed ($%d)" % speed_cost
+		speed_upgrade_button.disabled = money < speed_cost
+	else:
+		speed_upgrade_button.text = "Speed (Locked)"
+		speed_upgrade_button.disabled = true
 
 func _on_sell_tower_button_pressed() -> void:
 	if selected_placed_tower == null:
 		return
 
-	var refund := int(selected_placed_tower.cost * 0.5)
+	var refund: int = int(selected_placed_tower.get_sell_value())
 	money += refund
 
 	occupied.erase(selected_placed_tower_cell)
@@ -187,25 +209,36 @@ func _on_sell_tower_button_pressed() -> void:
 	clear_placed_tower_selection()
 	update_ui()
 
-func _on_upgrade_tower_button_pressed() -> void:
+func _on_damage_upgrade_button_pressed() -> void:
 	if selected_placed_tower == null:
 		return
 
-	if not selected_placed_tower.has_method("can_upgrade"):
+	var cost: int = int(selected_placed_tower.get_damage_upgrade_cost())
+	if cost < 0 or money < cost:
 		return
 
-	if not selected_placed_tower.can_upgrade():
-		return
+	money -= cost
+	selected_placed_tower.upgrade_damage()
 
-	var cost_to_upgrade: int = int(selected_placed_tower.upgrade_cost)
-	if money < cost_to_upgrade:
-		return
-
-	money -= cost_to_upgrade
-	selected_placed_tower.upgrade()
-
-	select_placed_tower(selected_placed_tower, selected_placed_tower_cell)
 	update_ui()
+	update_tower_popup()
+
+func _on_speed_upgrade_button_pressed() -> void:
+	if selected_placed_tower == null:
+		return
+
+	var cost: int = int(selected_placed_tower.get_speed_upgrade_cost())
+	if cost < 0 or money < cost:
+		return
+
+	money -= cost
+	selected_placed_tower.upgrade_speed()
+
+	update_ui()
+	update_tower_popup()
+
+func _on_close_popup_button_pressed() -> void:
+	clear_placed_tower_selection()
 
 # ----------------------------
 # Waves / Spawning
@@ -243,12 +276,10 @@ func start_wave() -> void:
 			await get_tree().create_timer(spawn_interval).timeout
 
 	elif wave == 4:
-		# FINAL BOSS WAVE
 		prompt_label.text = "FINAL EXAM APPROACHING..."
 		update_ui()
 
-		await get_tree().create_timer(1.0).timeout  # dramatic pause
-
+		await get_tree().create_timer(1.0).timeout
 		spawn_enemy(boss_enemy_runner_scene)
 
 	wave_spawning_done = true
@@ -268,7 +299,7 @@ func spawn_enemy(enemy_scene: PackedScene) -> void:
 	update_ui()
 
 # ----------------------------
-# Events (Enemy Death / Leak)
+# Events
 # ----------------------------
 func _on_enemy_died(reward_amount: int) -> void:
 	if game_over:
@@ -314,7 +345,7 @@ func update_ui() -> void:
 	health_label.text = "Health: " + str(health)
 	wave_label.text = "Wave: " + str(wave)
 	enemies_label.text = "Enemies: " + str(alive_enemies)
-	
+
 	match selected_tower:
 		TowerType.NONE:
 			selected_tower_label.text = "Selected: None"
@@ -322,42 +353,43 @@ func update_ui() -> void:
 			selected_tower_label.text = "Selected: Basic Tower"
 		TowerType.HEAVY:
 			selected_tower_label.text = "Selected: Heavy Tower"
-	
+
 	if selected_placed_tower != null:
-		if selected_placed_tower.has_method("can_upgrade") and selected_placed_tower.can_upgrade():
-			upgrade_tower_button.disabled = money < selected_placed_tower.upgrade_cost
-		else:
-			upgrade_tower_button.disabled = true
+		update_tower_popup()
 
 func _on_reset_button_pressed() -> void:
-	get_tree().reload_current_scene() 
+	get_tree().reload_current_scene()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	update_preview()
 
 func update_preview() -> void:
-	if selected_tower ==TowerType.NONE:
+	if selected_tower == TowerType.NONE:
 		preview.visible = false
 		return
+
 	preview.visible = true
+
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	var cell: Vector2i = grid.local_to_map(grid.to_local(mouse_pos))
 	var world_pos: Vector2 = grid.to_global(grid.map_to_local(cell))
-	
+
 	preview.global_position = world_pos
-	
+
 	var valid := true
-	
+
 	if grid.get_cell_source_id(0, cell) == -1:
 		valid = false
 	if grid.get_cell_atlas_coords(0, cell) != BUILDABLE_ATLAS:
 		valid = false
 	if occupied.has(cell):
 		valid = false
+
 	if valid:
 		preview.modulate = Color(0, 1, 0, 0.5)
 	else:
 		preview.modulate = Color(1, 0, 0, 0.5)
+
 # ----------------------------
 # Wave End Logic
 # ----------------------------
@@ -370,10 +402,11 @@ func _check_wave_end() -> void:
 		if wave >= MAX_WAVES:
 			_trigger_game_won()
 		else:
-			prompt_label.text = "Press SPACE to start wave"
+			prompt_label.text = "Press SPACE to start wave!"
 
-
-# TOWER BUTTONS
+# ----------------------------
+# Tower Buttons
+# ----------------------------
 func _on_basic_tower_button_pressed() -> void:
 	selected_tower = TowerType.BASIC
 	update_ui()

@@ -2,16 +2,24 @@
 
 [ext_resource type="Script" uid="uid://dh23bhffx3wcd" path="res://scripts/Tower.gd" id="1_8udu1"]
 [ext_resource type="Texture2D" uid="uid://bhv61u8c4tt6x" path="res://Assets/tempTower.svg" id="1_cqx8d"]
+[ext_resource type="Shader" uid="uid://cc7lwtgw2akn5" path="res://scenes/towers/Tower.gdshader" id="2_qn1rk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_62khf"]
+shader = ExtResource("2_qn1rk")
+shader_parameter/outline_color = Color(1, 1, 0, 1)
+shader_parameter/outline_size = 0.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cqx8d"]
 radius = 80.0
 
 [node name="Tower" type="Node2D" unique_id=805172022]
 script = ExtResource("1_8udu1")
+tower_name = "Basic Tower"
 damage = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1593916819]
 z_index = 20
+material = SubResource("ShaderMaterial_62khf")
 texture = ExtResource("1_cqx8d")
 
 [node name="Range" type="Area2D" parent="." unique_id=550657783]
