@@ -1,13 +1,10 @@
 [gd_scene format=3 uid="uid://geatqla0tgbn"]
 
 [ext_resource type="Script" uid="uid://jcn7u318hf2p" path="res://scripts/EnemyRunner.gd" id="1_6ceoh"]
-[ext_resource type="PackedScene" uid="uid://com1tqc81vgh6" path="res://scenes/enemies/TankEnemy.tscn" id="2_6kti8"]
+[ext_resource type="PackedScene" uid="uid://lupeb6kfgnmo" path="res://scenes/enemies/BossEnemy.tscn" id="2_6ceoh"]
 
 [node name="BossEnemyRunner" type="PathFollow2D" unique_id=1207767817]
 script = ExtResource("1_6ceoh")
 speed = 125.0
 
-[node name="Enemy" parent="." unique_id=305367900 instance=ExtResource("2_6kti8")]
-leak_damage = 8
-max_hp = 50
-reward = 20
+[node name="Enemy" parent="." unique_id=305367900 instance=ExtResource("2_6ceoh")]

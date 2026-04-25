@@ -12,8 +12,8 @@ bg_color = Color(0.18039216, 0.8, 0.44313726, 1)
 [node name="Enemy" type="Node2D" unique_id=305367900]
 script = ExtResource("1_eushv")
 leak_damage = 8
-max_hp = 50
-reward = 20
+max_hp = 60
+reward = 25
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1147028441]
 z_index = 10

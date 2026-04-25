@@ -40,6 +40,14 @@ const MAX_WAVES := 4
 @onready var sell_tower_button: Button = $UI/TowerPopup/VBoxContainer/HBoxContainer2/SellTowerButton
 @onready var close_popup_button: Button = $UI/TowerPopup/VBoxContainer/HBoxContainer2/ClosePopupButton
 
+@onready var end_game_popup: Panel = $UI/EndGamePopup
+@onready var end_game_label: Label = $UI/EndGamePopup/VBoxContainer/EndGameLabel
+@onready var end_game_message: Label = $UI/EndGamePopup/VBoxContainer/EndGameMessageLabel
+
+@onready var restart_button: Button = $UI/EndGamePopup/VBoxContainer/HBoxContainer/RestartButton
+@onready var next_stage_button: Button = $UI/EndGamePopup/VBoxContainer/HBoxContainer/NextStageButton
+@onready var main_menu_button: Button = $UI/EndGamePopup/VBoxContainer/HBoxContainer/MainMenuButton
+
 # ----------------------------
 # Packed Scenes
 # ----------------------------
@@ -83,7 +91,12 @@ func _ready() -> void:
 	speed_upgrade_button.pressed.connect(_on_speed_upgrade_button_pressed)
 	close_popup_button.pressed.connect(_on_close_popup_button_pressed)
 
+	restart_button.pressed.connect(_on_restart_button_pressed)
+	next_stage_button.pressed.connect(_on_next_stage_button_pressed)
+	main_menu_button.pressed.connect(_on_main_menu_button_pressed)
+
 	tower_popup.visible = false
+	end_game_popup.visible = false
 	preview.visible = false
 
 	update_ui()
@@ -330,12 +343,26 @@ func _on_enemy_leaked(leak_damage: int) -> void:
 func _trigger_game_over() -> void:
 	game_over = true
 	spawning_wave = false
-	prompt_label.text = "GAME OVER"
+
+	end_game_label.text = "GAME OVER"
+	end_game_message.text = "You ran out of health!"
+
+	end_game_popup.visible = true
+
+	next_stage_button.disabled = true
+	next_stage_button.visible = false
 
 func _trigger_game_won() -> void:
 	game_won = true
 	spawning_wave = false
-	prompt_label.text = "YOU WIN!"
+
+	end_game_label.text = "YOU WIN!"
+	end_game_message.text = "You passed the final exam!"
+
+	end_game_popup.visible = true
+
+	next_stage_button.disabled = false
+	next_stage_button.visible = true
 
 # ----------------------------
 # UI
@@ -390,6 +417,14 @@ func update_preview() -> void:
 	else:
 		preview.modulate = Color(1, 0, 0, 0.5)
 
+func _on_restart_button_pressed() -> void:
+	get_tree().reload_current_scene()
+
+func _on_next_stage_button_pressed() -> void:
+	print("Next stage not implemented yet")
+
+func _on_main_menu_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/main/TitleScreen.tscn")
 # ----------------------------
 # Wave End Logic
 # ----------------------------

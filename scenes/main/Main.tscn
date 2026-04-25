@@ -177,15 +177,16 @@ offset_bottom = 181.0
 text = "Reset Game"
 
 [node name="TowerPopup" type="Panel" parent="UI" unique_id=728948440]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -143.0
-offset_top = -114.0
-offset_right = 177.0
-offset_bottom = 146.0
+offset_left = -160.0
+offset_top = -130.0
+offset_right = 160.0
+offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -196,6 +197,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.2, 1)
 
 [node name="TowerTitleLabel" type="Label" parent="UI/TowerPopup/VBoxContainer" unique_id=316949302]
 layout_mode = 2
@@ -208,6 +210,7 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/TowerPopup/VBoxContainer" unique_id=1713803085]
 layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="DamageUpgradeButton" type="Button" parent="UI/TowerPopup/VBoxContainer/HBoxContainer" unique_id=195260621]
 layout_mode = 2
@@ -227,6 +230,59 @@ text = "Sell"
 [node name="ClosePopupButton" type="Button" parent="UI/TowerPopup/VBoxContainer/HBoxContainer2" unique_id=1493197247]
 layout_mode = 2
 text = "Close"
+
+[node name="EndGamePopup" type="Panel" parent="UI" unique_id=1397238041]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -244.0
+offset_top = -138.0
+offset_right = 76.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/EndGamePopup" unique_id=741327226]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -0.6666689
+offset_top = 3.3333383
+offset_right = -0.6666565
+offset_bottom = 3.3333435
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+
+[node name="EndGameLabel" type="Label" parent="UI/EndGamePopup/VBoxContainer" unique_id=422462776]
+layout_mode = 2
+text = "YOU WIN!"
+horizontal_alignment = 1
+
+[node name="EndGameMessageLabel" type="Label" parent="UI/EndGamePopup/VBoxContainer" unique_id=413075241]
+layout_mode = 2
+text = "You passed the final exam!"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/EndGamePopup/VBoxContainer" unique_id=1311729722]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RestartButton" type="Button" parent="UI/EndGamePopup/VBoxContainer/HBoxContainer" unique_id=149436877]
+layout_mode = 2
+text = "Restart Stage"
+
+[node name="NextStageButton" type="Button" parent="UI/EndGamePopup/VBoxContainer/HBoxContainer" unique_id=1786894782]
+layout_mode = 2
+text = "Next Stage"
+
+[node name="MainMenuButton" type="Button" parent="UI/EndGamePopup/VBoxContainer/HBoxContainer" unique_id=650660802]
+layout_mode = 2
+text = "Main Menu"
 
 [node name="PlacementPreview" type="Sprite2D" parent="." unique_id=920587897]
 modulate = Color(0.003921569, 0.003921569, 0.003921569, 0)
