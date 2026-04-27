@@ -319,23 +319,31 @@ func spawn_enemy(enemy_scene: PackedScene) -> void:
 # Events
 # ----------------------------
 func _on_enemy_died(reward_amount: int) -> void:
-	if game_over:
+	if game_over or game_won:
+		return
+
+	if alive_enemies <= 0:
 		return
 
 	money += reward_amount
-	alive_enemies -= 1
+	alive_enemies = max(alive_enemies - 1, 0)
+
 	update_ui()
 	_check_wave_end()
 
 func _on_enemy_leaked(leak_damage: int) -> void:
-	if game_over:
+	if game_over or game_won:
+		return
+
+	if alive_enemies <= 0:
 		return
 
 	health -= leak_damage
 	if health < 0:
 		health = 0
 
-	alive_enemies -= 1
+	alive_enemies = max(alive_enemies - 1, 0)
+
 	update_ui()
 
 	if health == 0:
