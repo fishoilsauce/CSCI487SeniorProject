@@ -14,7 +14,10 @@ const MAX_WAVES := 4
 # ----------------------------
 # Scene References
 # ----------------------------
-@onready var enemy_path: Path2D = $EnemyPath
+@onready var enemy_paths: Array[Path2D] = [
+	$EnemyPathA,
+	$EnemyPathB
+]
 @onready var grid: TileMap = $Grid
 @onready var preview: Sprite2D = $PlacementPreview
 
@@ -301,7 +304,8 @@ func start_wave() -> void:
 func spawn_enemy(enemy_scene: PackedScene) -> void:
 	var runner := enemy_scene.instantiate()
 	runner.progress = 0.0
-	enemy_path.add_child(runner)
+	var selected_path = enemy_paths.pick_random()
+	selected_path.add_child(runner)
 
 	runner.connect("leaked", Callable(self, "_on_enemy_leaked"))
 
@@ -421,7 +425,7 @@ func _on_restart_button_pressed() -> void:
 	get_tree().reload_current_scene()
 
 func _on_next_stage_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/main/Stage2.tscn")
+	print("Next stage not implemented yet")
 
 func _on_main_menu_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/main/TitleScreen.tscn")
