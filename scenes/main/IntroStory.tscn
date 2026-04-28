@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://b6ke3as0o3hua"]
+
+[ext_resource type="Script" uid="uid://bsxe1wnia88mr" path="res://scripts/IntroStory.gd" id="1_2e4wi"]
+[ext_resource type="FontFile" uid="uid://b7yt1tv0sadr6" path="res://Assets/fonts/ByteBounce.ttf" id="2_befwu"]
+
+[node name="IntroStory" type="Control" unique_id=1256530140]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2e4wi")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=450324656]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1444870637]
+custom_minimum_size = Vector2(700, 400)
+layout_mode = 1
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="StoryLabel" type="Label" parent="VBoxContainer" unique_id=1626272078]
+custom_minimum_size = Vector2(600, 200)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_befwu")
+theme_override_font_sizes/font_size = 35
+text = "You are a Computer Science student on the path to graduation.
+
+Each stage represents a course you must pass to complete your degree.
+
+To succeed, you must strategically place your study tools (towers) to defend against incoming challenges.
+
+Enemies represent assignments, deadlines, and obstacles that threaten your progress.
+
+If too many enemies get through, your academic progress will fall.
+
+At the end of each stage, you must face the ultimate challenge — the Professor.
+
+Defeat them to pass the course and move one step closer to graduation."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="SkipButton" type="Button" parent="VBoxContainer" unique_id=990396514]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_befwu")
+theme_override_font_sizes/font_size = 40
+text = "Skip"

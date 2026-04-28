@@ -1,0 +1,236 @@
+[gd_scene format=3 uid="uid://bx6oti31attob"]
+
+[ext_resource type="FontFile" uid="uid://b7yt1tv0sadr6" path="res://Assets/fonts/ByteBounce.ttf" id="1_r8hcy"]
+
+[node name="UI" type="CanvasLayer" unique_id=1011564778]
+
+[node name="MoneyLabel" type="Label" parent="." unique_id=1459421930]
+offset_left = 15.0
+offset_top = 40.0
+offset_right = 86.0
+offset_bottom = 63.0
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 30
+text = "Money: 0"
+
+[node name="HealthLabel" type="Label" parent="." unique_id=1829773187]
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 94.0
+offset_bottom = 38.0
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 30
+text = "Health: 0"
+
+[node name="WaveLabel" type="Label" parent="." unique_id=101291435]
+offset_left = 15.0
+offset_top = 65.0
+offset_right = 75.0
+offset_bottom = 88.0
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 30
+text = "Wave: 0"
+
+[node name="PromptLabel" type="Label" parent="." unique_id=1242785641]
+offset_left = 15.0
+offset_top = 115.0
+offset_right = 219.0
+offset_bottom = 138.0
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 30
+text = "Press SPACE to start wave!"
+
+[node name="EnemiesLabel" type="Label" parent="." unique_id=1244011326]
+offset_left = 15.0
+offset_top = 90.0
+offset_right = 98.0
+offset_bottom = 113.0
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 30
+text = "Enemies: 0"
+
+[node name="TowerPanel" type="PanelContainer" parent="." unique_id=1079345108]
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -245.0
+offset_bottom = -412.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TowerPanel" unique_id=2145805916]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Towers" type="Label" parent="TowerPanel/VBoxContainer" unique_id=1207831181]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 28
+text = " Towers"
+
+[node name="BasicTowerButton" type="Button" parent="TowerPanel/VBoxContainer" unique_id=603895992]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 24
+text = "Basic Tower
+$5 | ATK: 2
+Simple Attack Tower"
+autowrap_mode = 2
+
+[node name="HeavyTowerButton" type="Button" parent="TowerPanel/VBoxContainer" unique_id=421122513]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 24
+text = "Heavy Tower
+$8 | ATK: 5
+High Damage, Slower Fire Rate"
+autowrap_mode = 2
+
+[node name="SelectedTowerLabel" type="Label" parent="TowerPanel/VBoxContainer" unique_id=1131844340]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 24
+text = " Selected: None"
+
+[node name="ResetButton" type="Button" parent="." unique_id=948194798]
+offset_left = 12.0
+offset_top = 150.0
+offset_right = 113.0
+offset_bottom = 181.0
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 30
+text = "Reset Game"
+
+[node name="TowerPopup" type="Panel" parent="." unique_id=1037382064]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -130.0
+offset_right = 160.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TowerPopup" unique_id=1971111131]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1)
+
+[node name="TowerTitleLabel" type="Label" parent="TowerPopup/VBoxContainer" unique_id=2129659187]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 24
+
+[node name="TowerStatsLabel" type="Label" parent="TowerPopup/VBoxContainer" unique_id=1905745686]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 24
+
+[node name="TowerPathLabel" type="Label" parent="TowerPopup/VBoxContainer" unique_id=1062553203]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TowerPopup/VBoxContainer" unique_id=900230687]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="DamageUpgradeButton" type="Button" parent="TowerPopup/VBoxContainer/HBoxContainer" unique_id=1400422698]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 24
+text = "Damage Path"
+
+[node name="SpeedUpgradeButton" type="Button" parent="TowerPopup/VBoxContainer/HBoxContainer" unique_id=1094898283]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 24
+text = "Speed Path"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="TowerPopup/VBoxContainer" unique_id=431555808]
+layout_mode = 2
+
+[node name="SellTowerButton" type="Button" parent="TowerPopup/VBoxContainer/HBoxContainer2" unique_id=2071069607]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 24
+text = "Sell"
+
+[node name="ClosePopupButton" type="Button" parent="TowerPopup/VBoxContainer/HBoxContainer2" unique_id=1030425127]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 24
+text = "Close"
+
+[node name="EndGamePopup" type="Panel" parent="." unique_id=1632660345]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -244.0
+offset_top = -138.0
+offset_right = 76.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EndGamePopup" unique_id=1858394016]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -0.6666689
+offset_top = 3.3333383
+offset_right = -0.6666565
+offset_bottom = 3.3333435
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+
+[node name="EndGameLabel" type="Label" parent="EndGamePopup/VBoxContainer" unique_id=1859672321]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 25
+text = "YOU WIN!"
+horizontal_alignment = 1
+
+[node name="EndGameMessageLabel" type="Label" parent="EndGamePopup/VBoxContainer" unique_id=1540730598]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 25
+text = "You passed the final exam!"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EndGamePopup/VBoxContainer" unique_id=1622262328]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="RestartButton" type="Button" parent="EndGamePopup/VBoxContainer/HBoxContainer" unique_id=1841261149]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 20
+text = "Restart Stage"
+
+[node name="NextStageButton" type="Button" parent="EndGamePopup/VBoxContainer/HBoxContainer" unique_id=1372175821]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 20
+text = "Next Stage"
+
+[node name="MainMenuButton" type="Button" parent="EndGamePopup/VBoxContainer/HBoxContainer" unique_id=1272102473]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_r8hcy")
+theme_override_font_sizes/font_size = 20
+text = "Main Menu"
