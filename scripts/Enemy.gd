@@ -39,5 +39,6 @@ func die() -> void:
 		return
 
 	is_dead = true
+	AudioManager.play_enemy_death()
 	died.emit(reward)
 	get_parent().queue_free()

@@ -8,7 +8,9 @@ const TOWER_COST := 5
 const HEAVY_TOWER_COST := 8
 const MAX_WAVES := 4
 
-@export var enemies_per_wave: int = 5
+@export var wave_1_enemies: int = 6
+@export var wave_2_enemies: int = 8
+@export var wave_3_enemies: int = 6
 @export var spawn_interval: float = 0.6
 
 # ----------------------------
@@ -164,6 +166,7 @@ func place_tower_at_mouse(tower_scene_to_place: PackedScene, tower_cost: int) ->
 	tower.cost = tower_cost
 
 	occupied[cell] = tower
+	AudioManager.play_place_tower()
 
 func select_placed_tower(tower: Node2D, cell: Vector2i) -> void:
 	if selected_placed_tower != null and selected_placed_tower.has_method("set_selected"):
@@ -216,6 +219,8 @@ func _on_sell_tower_button_pressed() -> void:
 	if selected_placed_tower == null:
 		return
 
+	AudioManager.play_click()
+
 	var refund: int = int(selected_placed_tower.get_sell_value())
 	money += refund
 
@@ -235,6 +240,7 @@ func _on_damage_upgrade_button_pressed() -> void:
 
 	money -= cost
 	selected_placed_tower.upgrade_damage()
+	AudioManager.play_upgrade()
 
 	update_ui()
 	update_tower_popup()
@@ -249,11 +255,13 @@ func _on_speed_upgrade_button_pressed() -> void:
 
 	money -= cost
 	selected_placed_tower.upgrade_speed()
+	AudioManager.play_upgrade()
 
 	update_ui()
 	update_tower_popup()
 
 func _on_close_popup_button_pressed() -> void:
+	AudioManager.play_click()
 	clear_placed_tower_selection()
 
 # ----------------------------
@@ -266,6 +274,11 @@ func start_wave() -> void:
 	wave += 1
 	prompt_label.text = "Wave in progress..."
 	update_ui()
+
+	if wave == 4:
+		AudioManager.play_boss_spawn()
+	else:
+		AudioManager.play_wave_start()
 
 	if wave == 1:
 		for i in range(enemies_per_wave):
@@ -342,6 +355,8 @@ func _on_enemy_leaked(leak_damage: int) -> void:
 	if health < 0:
 		health = 0
 
+	AudioManager.play_hurt()
+
 	alive_enemies = max(alive_enemies - 1, 0)
 
 	update_ui()
@@ -356,6 +371,8 @@ func _trigger_game_over() -> void:
 	game_over = true
 	spawning_wave = false
 
+	AudioManager.play_lose()
+
 	end_game_label.text = "GAME OVER"
 	end_game_message.text = "You ran out of health!"
 
@@ -367,6 +384,8 @@ func _trigger_game_over() -> void:
 func _trigger_game_won() -> void:
 	game_won = true
 	spawning_wave = false
+
+	AudioManager.play_win()
 
 	end_game_label.text = "YOU WIN!"
 	end_game_message.text = "You passed the final exam!"
@@ -397,6 +416,7 @@ func update_ui() -> void:
 		update_tower_popup()
 
 func _on_reset_button_pressed() -> void:
+	AudioManager.play_click()
 	get_tree().reload_current_scene()
 
 func _process(_delta: float) -> void:
@@ -430,12 +450,14 @@ func update_preview() -> void:
 		preview.modulate = Color(1, 0, 0, 0.5)
 
 func _on_restart_button_pressed() -> void:
+	AudioManager.play_click()
 	get_tree().reload_current_scene()
 
 func _on_next_stage_button_pressed() -> void:
 	print("Next stage not implemented yet")
 
 func _on_main_menu_button_pressed() -> void:
+	AudioManager.play_click()
 	get_tree().change_scene_to_file("res://scenes/main/TitleScreen.tscn")
 # ----------------------------
 # Wave End Logic
@@ -455,9 +477,11 @@ func _check_wave_end() -> void:
 # Tower Buttons
 # ----------------------------
 func _on_basic_tower_button_pressed() -> void:
+	AudioManager.play_click()
 	selected_tower = TowerType.BASIC
 	update_ui()
 
 func _on_heavy_tower_button_pressed() -> void:
+	AudioManager.play_click()
 	selected_tower = TowerType.HEAVY
 	update_ui()

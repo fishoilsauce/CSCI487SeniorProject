@@ -62,6 +62,8 @@ func _on_fire_timer_timeout() -> void:
 	p.target = best
 	p.damage = damage
 
+	AudioManager.play_tower_shoot()
+
 func can_upgrade_damage() -> bool:
 	return (upgrade_path == "" or upgrade_path == "damage") and damage_level < max_upgrade_level
 

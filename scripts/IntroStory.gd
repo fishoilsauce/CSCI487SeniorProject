@@ -6,6 +6,7 @@ func _ready() -> void:
 	skip_button.pressed.connect(_on_skip_pressed)
 
 func _on_skip_pressed() -> void:
+	AudioManager.play_click()
 	get_tree().change_scene_to_file("res://scenes/main/Main.tscn")
 
 func _unhandled_input(event):
