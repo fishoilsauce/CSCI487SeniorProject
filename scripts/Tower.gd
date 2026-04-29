@@ -21,7 +21,7 @@ var targets: Array[Node] = []
 @onready var range_area: Area2D = $Range
 @onready var fire_timer: Timer = $FireTimer
 
-var projectile_scene: PackedScene = preload("res://scenes/projectiles/Projectile.tscn")
+@export var projectile_scene: PackedScene = preload("res://scenes/projectiles/Projectile.tscn")
 
 func _ready() -> void:
 	range_area.area_entered.connect(_on_area_entered)

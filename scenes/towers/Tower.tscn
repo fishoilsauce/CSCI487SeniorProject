@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ddbj6g4mb7iqt"]
 
 [ext_resource type="Script" uid="uid://dh23bhffx3wcd" path="res://scripts/Tower.gd" id="1_8udu1"]
+[ext_resource type="PackedScene" uid="uid://b4vl0a4ctjsg6" path="res://scenes/projectiles/BasicProjectile.tscn" id="2_62khf"]
 [ext_resource type="Shader" uid="uid://cc7lwtgw2akn5" path="res://scenes/towers/Tower.gdshader" id="2_qn1rk"]
 [ext_resource type="Texture2D" uid="uid://w22wnr4x4207" path="res://Assets/basic_tower.png" id="3_qn1rk"]
 
@@ -16,6 +17,7 @@ radius = 80.0
 script = ExtResource("1_8udu1")
 tower_name = "Basic Tower"
 damage = 2
+projectile_scene = ExtResource("2_62khf")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1593916819]
 z_index = 20
