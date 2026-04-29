@@ -66,7 +66,7 @@ var heavy_tower_scene: PackedScene = preload("res://scenes/towers/HeavyTower.tsc
 # Game State
 # ----------------------------
 var occupied := {}
-var money: int = 50
+var money: int = 25
 var health: int = 20
 var wave: int = 0
 
@@ -281,14 +281,14 @@ func start_wave() -> void:
 		AudioManager.play_wave_start()
 
 	if wave == 1:
-		for i in range(enemies_per_wave):
+		for i in range(wave_1_enemies):
 			if game_over or game_won:
 				return
 			spawn_enemy(enemy_runner_scene)
 			await get_tree().create_timer(spawn_interval).timeout
 
 	elif wave == 2:
-		for i in range(enemies_per_wave):
+		for i in range(wave_2_enemies):
 			if game_over or game_won:
 				return
 			if i % 3 == 2:
@@ -298,7 +298,7 @@ func start_wave() -> void:
 			await get_tree().create_timer(spawn_interval).timeout
 
 	elif wave == 3:
-		for i in range(enemies_per_wave):
+		for i in range(wave_3_enemies):
 			if game_over or game_won:
 				return
 			spawn_enemy(tank_enemy_runner_scene)

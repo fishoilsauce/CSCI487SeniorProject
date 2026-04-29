@@ -9,7 +9,7 @@ func _ready() -> void:
 
 func _on_start_button_pressed() -> void:
 	AudioManager.play_click()
-	get_tree().change_scene_to_file("res://scenes/main/IntroStory.tscn"))
+	get_tree().change_scene_to_file("res://scenes/main/IntroStory.tscn")
 
 func _on_quit_button_pressed() -> void:
 	AudioManager.play_click()

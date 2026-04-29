@@ -4,7 +4,7 @@ signal died(reward_amount: int)
 
 @export var leak_damage: int = 1
 @export var max_hp: int = 5
-@export var reward: int = 1
+@export var reward: int = 2
 
 @onready var health_bar: ProgressBar = $HealthBar
 

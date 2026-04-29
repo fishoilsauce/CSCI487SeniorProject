@@ -9,11 +9,11 @@ radius = 16.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jm2f"]
 bg_color = Color(0.18039216, 0.8, 0.44313726, 1)
 
-[node name="Enemy" type="Node2D" unique_id=305367900]
+[node name="Enemy2" type="Node2D" unique_id=305367900]
 script = ExtResource("1_1jm2f")
 leak_damage = 3
 max_hp = 10
-reward = 3
+reward = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1147028441]
 z_index = 10
