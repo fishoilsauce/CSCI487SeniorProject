@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dtwst7yfy5iia"]
 
 [ext_resource type="Script" uid="uid://dh23bhffx3wcd" path="res://scripts/Tower.gd" id="1_2x3y6"]
-[ext_resource type="Texture2D" uid="uid://ip5efjr700c4" path="res://Assets/heavy.svg" id="2_2x3y6"]
 [ext_resource type="Shader" uid="uid://cc7lwtgw2akn5" path="res://scenes/towers/Tower.gdshader" id="2_vgd1p"]
+[ext_resource type="Texture2D" uid="uid://c15wcbg6lmycl" path="res://Assets/heavy_tower.png" id="3_vgd1p"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kl2pc"]
 shader = ExtResource("2_vgd1p")
@@ -23,10 +23,9 @@ speed_upgrade_multiplier = 0.9
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1593916819]
 z_index = 20
+texture_filter = 1
 material = SubResource("ShaderMaterial_kl2pc")
-position = Vector2(-1, -6)
-scale = Vector2(0.09667969, 0.106445305)
-texture = ExtResource("2_2x3y6")
+texture = ExtResource("3_vgd1p")
 
 [node name="Range" type="Area2D" parent="." unique_id=550657783]
 collision_layer = 0

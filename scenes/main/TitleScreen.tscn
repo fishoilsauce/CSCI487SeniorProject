@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://djeeoni756wnt" path="res://scripts/TitleScreen.gd" id="1_ev0fr"]
 [ext_resource type="FontFile" uid="uid://b7yt1tv0sadr6" path="res://Assets/fonts/ByteBounce.ttf" id="2_hvoyl"]
+[ext_resource type="Texture2D" uid="uid://c6ybdhmxx678k" path="res://Assets/graduationcap.png" id="3_hsu5g"]
 
 [node name="TitleScreen" type="Control" unique_id=2090709921]
 layout_mode = 3
@@ -21,10 +22,10 @@ color = Color(0.5492111, 0.45322818, 0.40694687, 1)
 
 [node name="TitleLabel" type="Label" parent="." unique_id=276258027]
 layout_mode = 0
-offset_left = 317.0
-offset_top = 75.0
-offset_right = 811.0
-offset_bottom = 133.0
+offset_left = 325.0
+offset_top = 119.0
+offset_right = 819.0
+offset_bottom = 177.0
 theme_override_fonts/font = ExtResource("2_hvoyl")
 theme_override_font_sizes/font_size = 70
 text = "Path to Graduation!"
@@ -32,9 +33,9 @@ text = "Path to Graduation!"
 [node name="StartButton" type="Button" parent="." unique_id=1625681089]
 layout_mode = 0
 offset_left = 490.0
-offset_top = 196.0
+offset_top = 260.0
 offset_right = 630.0
-offset_bottom = 246.0
+offset_bottom = 310.0
 theme_override_fonts/font = ExtResource("2_hvoyl")
 theme_override_font_sizes/font_size = 30
 text = "START GAME"
@@ -42,9 +43,15 @@ text = "START GAME"
 [node name="QuitButton" type="Button" parent="." unique_id=1534002193]
 layout_mode = 0
 offset_left = 490.0
-offset_top = 269.0
+offset_top = 320.0
 offset_right = 630.0
-offset_bottom = 319.0
+offset_bottom = 370.0
 theme_override_fonts/font = ExtResource("2_hvoyl")
 theme_override_font_sizes/font_size = 30
 text = "QUIT"
+
+[node name="Graduationcap" type="Sprite2D" parent="." unique_id=1879956287]
+texture_filter = 1
+position = Vector2(564, 67.00003)
+scale = Vector2(5, 5)
+texture = ExtResource("3_hsu5g")

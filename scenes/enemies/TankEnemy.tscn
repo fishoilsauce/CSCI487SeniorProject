@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://com1tqc81vgh6"]
 
 [ext_resource type="Script" uid="uid://wcamufbm3227" path="res://scripts/Enemy.gd" id="1_1jm2f"]
-[ext_resource type="Texture2D" uid="uid://4s34p7rejbwg" path="res://Assets/shield.svg" id="2_1jm2f"]
+[ext_resource type="Texture2D" uid="uid://dm8etcnewi8oo" path="res://Assets/enemy_project.png" id="2_1jm2f"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hpe7p"]
 radius = 16.0
@@ -17,8 +17,9 @@ reward = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1147028441]
 z_index = 10
-position = Vector2(0.53125066, 0.65625155)
-scale = Vector2(0.045837402, 0.05145264)
+texture_filter = 1
+position = Vector2(0, -2)
+scale = Vector2(0.9, 0.9)
 texture = ExtResource("2_1jm2f")
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1804883244]
